@@ -1,0 +1,13 @@
+{
+    "name": "Cybertec Workflow",
+    "description": "Cybertec CI workflow template.",
+    "iconName": "database-icon",
+    "categories": [
+        "PostgreSQL"
+    ],
+    "filePatterns": [
+        "package.json$",
+        "^Dockerfile",
+        ".*\\.md$"
+    ]
+}
