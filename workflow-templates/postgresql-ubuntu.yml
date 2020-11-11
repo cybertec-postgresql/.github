@@ -1,0 +1,34 @@
+name: PostgreSQL Ubuntu
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+    # Use preinstalled PostgreSQL 
+    - name: Start PostgreSQL on Ubuntu
+      run: |
+        sudo systemctl start postgresql.service
+        pg_isready
+
+    # Change user name and password to meet your requirements
+    - name: Create additional user
+      run: |
+        sudo -u postgres psql --command="CREATE USER joe PASSWORD 'foo'" --command="\du"
+
+    # Change database name to meet your requirements
+    - name: Create additional database
+      run: |
+        sudo -u postgres createdb --owner=joe Test
+        PGPASSWORD=foo psql --username=joe --host=localhost --list timetable
+    
+    # Put your steps here, e.g. checkout, build and test
+    - name: Check out code
+      uses: actions/checkout@v2

@@ -1,0 +1,9 @@
+{
+    "name": "PostgreSQL Ubuntu",
+    "description": "This template starts the current PostgreSQL on Ubuntu worker and check the connection",
+    "iconName": "database-icon",
+    "categories": [
+        "PostgreSQL",
+        "Database"
+    ]
+}
