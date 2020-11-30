@@ -1,0 +1,47 @@
+name: Go Build & Test
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Get dependencies
+      run: |
+        go mod download
+        go version
+
+    - name: GolangCI-Lint
+      uses: golangci/golangci-lint-action@v1
+      with:
+        # Required: the version of golangci-lint is required and must be specified without patch version: we always use the latest patch version.
+        version: v1.30
+
+    - name: Test
+      run: go test -v -p 1 -coverprofile=profile.cov ./...
+
+    - name: Convert coverage to lcov
+      uses: jandelgado/gcov2lcov-action@v1.0.2
+      with:
+          infile: profile.cov
+          outfile: coverage.lcov
+
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: coverage.lcov
+
+    - name: Run GoReleaser
+      uses: goreleaser/goreleaser-action@master
+      with:
+        args: release --snapshot --skip-publish --rm-dist

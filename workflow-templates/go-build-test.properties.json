@@ -1,0 +1,7 @@
+{
+    "name": "Go Build and Test",
+    "description": "This template builds Go project and runs the tests",
+    "categories": [
+        "Go"
+    ]
+}
